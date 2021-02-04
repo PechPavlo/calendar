@@ -27,7 +27,7 @@ export const createSelect = (data, selectClass, optionClass, selected) => {
   const select = newElement('select', selectClass);
   data.forEach((item) => {
     const option = newElement('option', optionClass, '', `${item === selected
-      ? 'selected'
+      ? 'selected='
       : ''}`, `value=${item}`);
     let text;
     if (optionClass === 'time') {
