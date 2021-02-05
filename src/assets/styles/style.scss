@@ -22,6 +22,12 @@ h1 {
     color: rgb(0, 47, 255);
 }
 
+li {
+    list-style: none;
+    margin    : 0;
+    padding   : 0;
+}
+
 .modal_wrapper {
     visibility         : hidden;
     position           : absolute;
@@ -58,6 +64,7 @@ h1 {
     display        : flex;
     justify-content: space-between;
     width          : 80%;
+    margin: 0 auto;
 }
 
 .controls {
@@ -65,7 +72,6 @@ h1 {
     justify-content: flex-end;
     align-items    : center;
     width          : 50%;
-
 }
 
 table {
@@ -74,11 +80,13 @@ table {
     font-family    : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     // background:  radial-gradient(farthest-corner at 50% 50%, white, #DCECF8);
     color          : #0C213B;
+    margin: 0 auto;
 }
 
 th {
-    border          : 2px solid gray;
-    background-color: rgba(226, 221, 221, 0.911);
+    border    : 2px solid rgba(226, 221, 221, 0.911);
+    background-color:whitesmoke;
+    height    : 2rem;
 }
 
 td {
@@ -91,6 +99,7 @@ td {
 td:first-child {
     width: 99px;
     color: rgb(45, 68, 68);
+    background-color: whitesmoke;
 }
 
 .close-event-btn {
@@ -139,6 +148,9 @@ td:first-child {
 #add-form {
     display       : flex;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 10rem;
 }
 
 .add_lable {
@@ -152,40 +164,88 @@ td:first-child {
 .add_dropdown,
 .add_form-name {
     width : 12rem;
+    height: 2rem;
     border: 0.5px solid black;
+    border-radius: 5px;
+    padding-left: 1rem;
+    font-size: 1rem;
 }
 
 .add_modal-footer {
     display        : flex;
     justify-content: flex-end;
+    width: 90%;
+    button{
+        margin-left: 2rem;
+        width: 7rem;
+        height: 2rem;
+        border-radius: 5px;
+    }
 }
 
 .add_modal-container {
     visibility      : hidden;
     position        : absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
     left            : calc((100vw - 35rem) / 2);
     top             : -35rem;
-    background-color: rgb(47, 255, 210);
+    // background-color: rgb(47, 255, 210);
+    background-color: wheat;
+    border-radius: 5px;
     transition      : all 0.5s ease 0s;
     width           : 35rem;
-    height          : 35rem;
+    height          : 25rem;
     margin          : 0 auto;
 }
 
-.add_modal-error{
+.add_modal-error {
     visibility: hidden;
-    &.booked{
+
+    &.booked {
         visibility: visible;
     }
 }
+
+#add_select {
+    opacity: 0;
+    width  : 0;
+    height : 0;
+}
+
 .modal_wrapper.active .add_modal-container {
     visibility: visible;
-    top       : calc((100vh - 35rem) / 2);
+    top       : calc((100vh - 25rem) / 2);
 }
 
 .add_dropdown {
-    background-color: honeydew;
+    // background-color: honeydew;
+    background-color: white;
     width           : 12rem;
+}
+
+.add_dropdown-main {
+    display        : flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    span{
+        font-size: 1rem;
+    }
+}
+
+.add_dropdown-fake_select {
+    background: inherit;
+    border    : none;
+}
+
+.add_dropdown-fake_select:focus {
+    background: inherit;
+    border-color    : rgba(0, 0, 0, 0.02);;
+    box-shadow: none;
+    outline: none;
 }
 
 .add_dropdown-content {
@@ -194,35 +254,107 @@ td:first-child {
     display         : flex;
     flex-direction  : column;
     width           : 12rem;
-    background-color: honeydew;
-    transition      : all 0.3s ease 0s;
+    // background-color: honeydew;
+    background-color: white;
+    margin-left: -17px;
+    transition      : all 0.4s ease 0s;
+    border: 0.5px solid black;
 
 }
 
-.add_dropdown:hover .add_dropdown-content {
+.add_dropdown.active .add_dropdown-content {
     visibility: visible;
 }
 
-.calendar_cell{
+.member-selected-to-add {
     visibility: hidden;
+}
+
+.add_dropdown.active .member-selected-to-add:checked::before {
+    visibility : visible;
+    content    : '\2713';
+    font-weight: bold;
+    color      : cornflowerblue;
+}
+
+.delete_modal-container{
+    visibility      : hidden;
+    position        : absolute;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    padding: 2px 4px;
-    background-color: aquamarine;
-    height: 100%;
-    &.booked{
-        visibility:visible;
+    justify-content: space-evenly;
+    left            : calc((100vw - 21rem) / 2);
+    top             : -35rem;
+    background-color: wheat;
+    border-radius: 5px;
+    transition      : all 0.5s ease 0s;
+    width           : 21rem;
+    height          : 11rem;
+    font-size: 1.5rem;
+    // margin          : 0 auto;
+}
+
+.modal_wrapper.active .delete_modal-container {
+    visibility: visible;
+    top       : calc((100vh - 11rem) / 2);
+}
+
+.delete_modal-footer{
+    display: flex;
+    justify-content: space-evenly;
+    width: 90%;
+    button{
+        width: 7rem;
+        height: 2rem;
+        border-radius: 5px;
     }
-
 }
 
-.calendar_cell-del_btn{
+.calendar_cell {
+    visibility      : hidden;
+    display         : flex;
+    justify-content : space-between;
+    align-items     : center;
+    padding         : 2px 4px;
+    background-color: aquamarine;
+    height          : 100%;
+
+    &.booked {
+        visibility: visible;
+    }
+}
+
+.calendar_cell_participants {
+    visibility      : hidden;
+    position        : absolute;
+    display         : flex;
+    flex-direction  : column;
+    width           : 8rem;
+    background-color: honeydew;
+    transition      : all 0.3s ease 0s;
+}
+
+td:hover .calendar_cell_participants {
+    visibility: visible;
+}
+
+.calendar_cell-del_btn {
     background-color: inherit;
-    border: none;
-    padding: 3px;
+    border          : none;
+    padding         : 3px;
 }
 
-.calendar_cell-del_btn::after{
-    content: '\2716'	;
+.calendar_cell-del_btn::after {
+    content: '\2716';
+}
+
+#add_modal-error_btn {
+    background-color: inherit;
+    border          : none;
+    padding         : 3px;
+}
+
+#add_modal-error_btn::after {
+    content: '\2716';
 }

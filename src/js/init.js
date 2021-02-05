@@ -42,12 +42,12 @@ const init = (props) => {
           const cellContainer = newElement('div', 'calendar_cell', '', `data-cell=${day}${time}`);
           const cellSpan = newElement('span', 'calendar_cell-name', '', `data-cell_name=${day}${time}`);
           const delBtn = newElement('button', 'calendar_cell-del_btn', '', `data-del_btn=${day}${time}`);
-          // cellSpan.textContent = props.calendar[`${day}${time}`].name;
-          // // const cellParticipants = newElement('ul', 'calendar_cell_participants');
-          // // const cellParticipant = newElement('li', 'calendar_cell_participant');
+          const cellParticipants = newElement('ul', 'calendar_cell_participants');
+          // const cellParticipant = newElement('li', 'calendar_cell_participant');
           cellContainer.insertAdjacentElement('beforeend', cellSpan);
           cellContainer.insertAdjacentElement('beforeend', delBtn);
           td.insertAdjacentElement('beforeend', cellContainer);
+          td.insertAdjacentElement('beforeend', cellParticipants);
           td.dataset.time = `${day}${time}`;
         } else { td.textContent = day; }
         row.insertAdjacentElement('beforeend', td);
@@ -57,27 +57,33 @@ const init = (props) => {
     return tabel;
   };
 
-  const createFilterDropdown = () => {
-    const dropdown = newElement('div', 'filter_dropdown');
-    const span = newElement('span', 'filter_dropdown-selected');
-    const dropdownContent = newElement('div', 'filter_dropdown-content');
-    props.team.forEach((member) => {
-      const label = newElement('label', 'member');
-      const input = newElement('input', 'member-selected', `by-${member}`, 'type=checkbox', `value=${member}`);
-      if (props.filteredBy.includes('All')) {
-        input.setAttribute('checked', '');
-      } else {
-        input.toggleAttribute('checked', props.filteredBy.includes(member));
-      }
-      label.textContent = member === 'All' ? 'All members' : member;
-      label.insertAdjacentElement('beforeend', input);
-      dropdownContent.insertAdjacentElement('beforeend', label);
-    });
-    span.textContent = props.filteredBy.includes('All') ? 'All members' : props.filteredBy.join(', ');
-    dropdown.insertAdjacentElement('beforeend', span);
-    dropdown.insertAdjacentElement('beforeend', dropdownContent);
-    return dropdown;
-  };
+  // const createFilterDropdown = () => {
+  //   const dropdown = newElement('div', 'filter_dropdown');
+  //   const span = newElement('span', 'filter_dropdown-selected');
+  //   const dropdownContent = newElement('div', 'filter_dropdown-content');
+  //   props.team.forEach((member) => {
+  //     const label = newElement('label', 'member');
+  //     const input = newElement('input',
+  //       'member-selected',
+  //       `by-${member}`,
+  //       'type=checkbox',
+  //       `value=${member}`);
+  //     if (props.filteredBy.includes('All')) {
+  //       input.setAttribute('checked', '');
+  //     } else {
+  //       input.toggleAttribute('checked', props.filteredBy.includes(member));
+  //     }
+  //     label.textContent = member === 'All' ? 'All members' : member;
+  //     label.insertAdjacentElement('beforeend', input);
+  //     dropdownContent.insertAdjacentElement('beforeend', label);
+  //   });
+  //   span.textContent = props.filteredBy.includes('All')
+  //   ? 'All members'
+  //   : props.filteredBy.join(', ');
+  //   dropdown.insertAdjacentElement('beforeend', span);
+  //   dropdown.insertAdjacentElement('beforeend', dropdownContent);
+  //   return dropdown;
+  // };
 
   const createFilter = () => {
     const filter = createSelect(props.team, 'filtered-by', 'member', 'All');
@@ -86,27 +92,32 @@ const init = (props) => {
   };
 
   const createAddDropdown = () => {
-    const dropdown = newElement('div', 'add_dropdown');
-    const span = newElement('span', 'add_dropdown-selected');
-    const mainInput = newElement('input', '', 'add_select', 'type=hidden');
-    const dropdownContent = newElement('div', 'add_dropdown-content');
+    const dropdown = newElement('div', 'add_dropdown', '', 'data-drop=down');
+    const dropdownMain = newElement('div', 'add_dropdown-main', '', 'data-drop=down');
+    const span = newElement('span', 'add_dropdown-selected', '', 'data-drop=down');
+    const fakeSelect = newElement('select', 'add_dropdown-fake_select', '', 'data-drop=down');
+    const mainInput = newElement('input', '', 'add_select', 'form=add-form', 'required=');
+    mainInput.setAttribute('data-drop', 'down');
+    const dropdownContent = newElement('div', 'add_dropdown-content', '', 'data-drop=down');
     props.team.forEach((member) => {
-      const label = newElement('label', 'member');
-      const input = newElement('input', 'member-selected-to-add', `add-${member}`, 'type=checkbox', `value=${member}`);
+      const label = newElement('label', 'member', '', 'data-drop=down');
+      const input = newElement('input', 'member-selected-to-add', '', 'type=checkbox', `value=${member}`, 'data-drop=down');
       label.textContent = member === 'All' ? 'All members' : member;
       label.insertAdjacentElement('beforeend', input);
       dropdownContent.insertAdjacentElement('beforeend', label);
     });
     span.textContent = 'choose participiants';
-    dropdown.insertAdjacentElement('beforeend', span);
-    dropdown.insertAdjacentElement('beforeend', mainInput);
+    dropdownMain.insertAdjacentElement('beforeend', span);
+    dropdownMain.insertAdjacentElement('beforeend', mainInput);
+    dropdownMain.insertAdjacentElement('beforeend', fakeSelect);
+    dropdown.insertAdjacentElement('beforeend', dropdownMain);
     dropdown.insertAdjacentElement('beforeend', dropdownContent);
     return dropdown;
   };
 
   const addEventForm = () => {
     const form = newElement('form', '', 'add-form');
-    const formInput = newElement('input', 'add_form-name', 'new_event-name', 'placeholder=Event name');
+    const formInput = newElement('input', 'add_form-name', 'new_event-name', 'placeholder=Event name', 'required=');
     const members = createAddDropdown();
     const name = newElement('label', 'add_lable');
     const participants = newElement('label', 'add_lable', '', 'for=add_select');
