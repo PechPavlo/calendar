@@ -8,6 +8,9 @@ const init = (props) => {
   const controls = newElement('div', 'controls');
   const addButton = newElement('button', 'add-event-btn');
 
+  const newProps = props;
+  const localProps = localStorage.pechPavloCalendar;
+
   const createInitCalendar = () => {
     const { calendarItemsList } = props;
     props.days.forEach((day) => {
@@ -16,14 +19,17 @@ const init = (props) => {
         const calendarItem = props.calendar;
         calendarItem[`${day}${time}`] = {
           isBooked: false,
-          name: 'hello!',
+          name: ' ',
           participants: [],
         };
       });
     });
   };
 
-  createInitCalendar();
+  if (localProps && JSON.parse(localProps).release === props.release) {
+    newProps.calendar = JSON.parse(localProps).calendar;
+    newProps.calendarItemsList = JSON.parse(localProps).calendarItemsList;
+  } else { createInitCalendar(); }
 
   const createTable = () => {
     const tabel = newElement('table', 'calendar');

@@ -4,15 +4,10 @@ import init from './init';
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   filteredBy: 'All',
+  release: '1.1',
   team: ['Maria', 'Bob', 'Alex', 'John', 'All'],
   times: [10, 11, 12, 13, 14, 15, 16, 17, 18],
-  calendar: {
-    Monday10: {
-      isBooked: true,
-      name: 'Daily Standup',
-      participants: ['Maria', 'Bob', 'Alex'],
-    },
-  },
+  calendar: {},
   calendarItemsList: [],
 };
 init(props);
@@ -37,6 +32,10 @@ const newDay = document.querySelector('.add_day');
 const newTime = document.querySelector('.add_time');
 
 let eventToDelete = '';
+
+const saveStorage = () => {
+  localStorage.pechPavloCalendar = JSON.stringify(props);
+};
 
 const fillCalendarTable = () => {
   calendarItems.forEach((dayTime) => {
@@ -68,10 +67,11 @@ const deleteModalHandler = (event) => {
     document.querySelector(`[data-cell=${eventToDelete}]`).classList.toggle('booked', false);
     props.calendar[eventToDelete] = {
       isBooked: false,
-      name: 'hello!',
+      name: ' ',
       participants: [],
     };
     fillCalendarTable();
+    saveStorage();
   }
 };
 
@@ -101,6 +101,7 @@ const newEventHandler = () => {
   newName.value = '';
   addDropdownHandler(0, 1);
 };
+
 const addModaltHandler = (event) => {
   if (event.target.id === 'add-modal') { addModal.classList.toggle('active'); }
   if (event.target.dataset.drop !== 'down') { addDropdown.classList.toggle('active', false); }
@@ -120,6 +121,7 @@ const createEventHandler = (event) => {
     addModal.classList.toggle('active');
   }
   fillCalendarTable();
+  saveStorage();
 };
 
 const setupListeners = () => {
@@ -130,6 +132,7 @@ const setupListeners = () => {
   errorButton.addEventListener('click', () => addModalError.classList.toggle('booked', false));
   addDropdownMain.addEventListener('click', () => addDropdown.classList.toggle('active'));
   membersToAddInput.addEventListener('click', (event) => event.stopPropagation());
+  membersToAddInput.addEventListener('click', (event) => event.preventDefault()); // ?
   addModal.addEventListener('click', addModaltHandler);
   membersToAdd.forEach((el) => el.addEventListener('click', addDropdownHandler));
   deleteModal.addEventListener('click', deleteModalHandler);
@@ -140,3 +143,4 @@ const setupListeners = () => {
 
 setupListeners();
 fillCalendarTable();
+saveStorage();
