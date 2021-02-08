@@ -12,14 +12,13 @@
 body,
 html {
     width        : 100vw;
-    /* min-height: 100vh; */
     height       : 100vh;
-    background   : rgb(255, 165, 80);
+    background   : rgb(253, 241, 229);
     overflow-x   : hidden;
 }
 
 h1 {
-    color: rgb(0, 47, 255);
+    color: rgb(91, 108, 185);
 }
 
 li {
@@ -63,8 +62,9 @@ li {
 .main_top-container {
     display        : flex;
     justify-content: space-between;
-    width          : 80%;
-    margin: 0 auto;
+    width          : 95%;
+    max-width: 46rem;
+    margin         : 2rem auto;
 }
 
 .controls {
@@ -80,25 +80,26 @@ table {
     font-family    : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     // background:  radial-gradient(farthest-corner at 50% 50%, white, #DCECF8);
     color          : #0C213B;
-    margin: 0 auto;
+    margin         : 0 auto;
+    min-width: 700px;
 }
 
 th {
-    border    : 2px solid rgba(226, 221, 221, 0.911);
-    background-color:whitesmoke;
-    height    : 2rem;
+    border          : 2px solid rgba(226, 221, 221, 0.911);
+    background-color: whitesmoke;
+    height          : 2rem;
 }
 
 td {
-    width     : 8rem;
+    width     : 9rem;
     border    : 2px solid rgba(226, 221, 221, 0.911);
     text-align: center;
     height    : 2rem;
 }
 
 td:first-child {
-    width: 99px;
-    color: rgb(45, 68, 68);
+    width           : 99px;
+    color           : rgb(45, 68, 68);
     background-color: whitesmoke;
 }
 
@@ -120,81 +121,87 @@ td:first-child {
     background-color: lavender;
 }
 
-.filter_dropdown {
-    background-color: honeydew;
-    width           : 12rem;
-    height          : 1.6rem;
-}
-
-.filter_dropdown-content {
-    visibility      : hidden;
-    position        : absolute;
-    display         : flex;
-    flex-direction  : column;
-    width           : 12rem;
-    background-color: honeydew;
-    transition      : all 0.3s ease 0s;
-}
-
-.filter_dropdown:hover .filter_dropdown-content {
-    visibility: visible;
-}
-
 .add-event-btn {
-    width : 5rem;
-    height: 2rem;
+    // width        : 5rem;
+    height       : 2rem;
+    width        : 7rem;
+    margin-left: 2rem;
+    border-radius: 5px;
+    cursor       : pointer;
+    outline: none;
+    transition   : transform 0.1s ease-in-out;
+    &:hover {
+        transform         : translateY(-8%);
+        -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow   : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        box-shadow        : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    }
 }
 
 #add-form {
-    display       : flex;
-    flex-direction: column;
+    display        : flex;
+    flex-direction : column;
     justify-content: space-between;
-    align-items: center;
-    height: 10rem;
+    align-items    : center;
+    height         : 12rem;
+    font-size      : 1.2rem;
+
 }
 
 .add_lable {
     display        : flex;
     justify-content: space-between;
-    width          : 20rem;
+    width          : 22rem;
 }
 
 .add_time,
 .add_day,
 .add_dropdown,
-.add_form-name {
-    width : 12rem;
-    height: 2rem;
-    border: 0.5px solid black;
+.add_form-name,
+.filtered-by {
+    width        : 12rem;
+    height       : 2rem;
+    border       : 0.5px solid black;
     border-radius: 5px;
-    padding-left: 1rem;
-    font-size: 1rem;
+    padding-left : 1rem;
+    font-size    : 1rem;
 }
 
 .add_modal-footer {
     display        : flex;
     justify-content: flex-end;
-    width: 90%;
-    button{
-        margin-left: 2rem;
-        width: 7rem;
-        height: 2rem;
+    align-items    : center;
+    width          : 90%;
+    height         : 5rem;
+
+    button {
+        margin-left  : 2rem;
+        width        : 7rem;
+        height       : 2rem;
         border-radius: 5px;
+        cursor       : pointer;
+        transition   : transform 0.1s ease-in-out;
+
+        &:hover {
+            transform         : translateY(-10%);
+            -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow   : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+            box-shadow        : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        }
     }
 }
 
 .add_modal-container {
     visibility      : hidden;
     position        : absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    display         : flex;
+    flex-direction  : column;
+    align-items     : center;
+    justify-content : space-between;
     left            : calc((100vw - 35rem) / 2);
     top             : -35rem;
-    // background-color: rgb(47, 255, 210);
     background-color: wheat;
-    border-radius: 5px;
+    border-radius   : 8px;
     transition      : all 0.5s ease 0s;
     width           : 35rem;
     height          : 25rem;
@@ -202,17 +209,63 @@ td:first-child {
 }
 
 .add_modal-error {
-    visibility: hidden;
+    visibility      : hidden;
+    width           : 100%;
+    height          : 4rem;
+    display         : flex;
+    justify-content : space-between;
+    align-items     : center;
+    color           : rgb(175, 0, 0);
+    background-color: rgba(230, 67, 67, 0.363);
+    padding         : 10px;
+    font-size       : 20px;
+    border-radius   : 8px 8px 0 0;
+
 
     &.booked {
         visibility: visible;
     }
+
+    &::before {
+        content         : '\2716';
+        display         : flex;
+        align-items     : center;
+        justify-content : space-around;
+        color           : white;
+        background-color: red;
+        border-radius   : 50%;
+        width           : 2rem;
+        height          : 2rem;
+        padding-left    : 1px;
+        padding-bottom  : 2px;
+    }
+}
+
+
+#add_modal-error_btn {
+    background-color: rgba(0, 0, 0, 0);
+    cursor          : pointer;
+    border          : none;
+    padding         : 3px;
+    color           : rgb(175, 0, 0);
+    font-size       : 20px;
+    transition      : all 0.2s ease-in-out;
+}
+
+#add_modal-error_btn::after {
+    content: '\2716';
+}
+
+#add_modal-error_btn:hover {
+    transform: scale(1.2) translateY(10%);
 }
 
 #add_select {
-    opacity: 0;
-    width  : 0;
-    height : 0;
+    position: absolute;
+    opacity : 0;
+    width   : 1px;
+    height  : 1px;
+    z-index : -1;
 }
 
 .modal_wrapper.active .add_modal-container {
@@ -221,7 +274,6 @@ td:first-child {
 }
 
 .add_dropdown {
-    // background-color: honeydew;
     background-color: white;
     width           : 12rem;
 }
@@ -229,9 +281,10 @@ td:first-child {
 .add_dropdown-main {
     display        : flex;
     justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    span{
+    align-items    : center;
+    height         : 100%;
+
+    span {
         font-size: 1rem;
     }
 }
@@ -239,14 +292,15 @@ td:first-child {
 .add_dropdown-fake_select {
     background: inherit;
     border    : none;
-    width: 1rem;
+    width     : 1rem;
 }
 
 .add_dropdown-fake_select:focus {
-    background: inherit;
-    border-color    : rgba(0, 0, 0, 0.02);;
+    background  : inherit;
+    border-color: rgba(0, 0, 0, 0.02);
+    ;
     box-shadow: none;
-    outline: none;
+    outline   : none;
 }
 
 .add_dropdown-content {
@@ -255,11 +309,9 @@ td:first-child {
     display         : flex;
     flex-direction  : column;
     width           : 12rem;
-    // background-color: honeydew;
     background-color: white;
-    margin-left: -17px;
-    transition      : all 0.4s ease 0s;
-    border: 0.5px solid black;
+    margin-left     : -17px;
+    border          : 0.5px solid black;
 
 }
 
@@ -278,21 +330,21 @@ td:first-child {
     color      : cornflowerblue;
 }
 
-.delete_modal-container{
-    visibility      : hidden;
-    position        : absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    left            : calc((100vw - 21rem) / 2);
-    top             : -35rem;
-    background-color: wheat;
-    border-radius: 5px;
-    transition      : all 0.5s ease 0s;
-    width           : 21rem;
-    height          : 11rem;
-    font-size: 1.5rem;
+.delete_modal-container {
+    visibility         : hidden;
+    position           : absolute;
+    display            : flex;
+    flex-direction     : column;
+    align-items        : center;
+    justify-content    : space-evenly;
+    left               : calc((100vw - 21rem) / 2);
+    top                : -35rem;
+    background-color   : wheat;
+    border-radius      : 5px;
+    transition         : all 0.5s ease 0s;
+    width              : 21rem;
+    height             : 11rem;
+    font-size          : 1.5rem;
     // margin          : 0 auto;
 }
 
@@ -301,14 +353,24 @@ td:first-child {
     top       : calc((100vh - 11rem) / 2);
 }
 
-.delete_modal-footer{
-    display: flex;
+.delete_modal-footer {
+    display        : flex;
     justify-content: space-evenly;
-    width: 90%;
-    button{
-        width: 7rem;
-        height: 2rem;
+    width          : 90%;
+
+    button {
+        width        : 7rem;
+        height       : 2rem;
         border-radius: 5px;
+        cursor       : pointer;
+        transition   : transform 0.1s ease-in-out;
+
+        &:hover {
+            transform         : translateY(-8%);
+            -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow   : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+            box-shadow        : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        }
     }
 }
 
@@ -333,10 +395,18 @@ td:first-child {
     flex-direction  : column;
     width           : 8rem;
     background-color: honeydew;
-    transition      : all 0.3s ease 0s;
+    border: 2px solid rgb(189, 238, 170);
+    border-radius: 0 0 8px 8px;
+    transition      : all 0.2s ease-in-out;
+
+}
+.calendar_cell_participant{
+    height: 1.8rem;
+    padding: 3px;
+    border-top: 1px solid palegoldenrod;
 }
 
-td:hover .calendar_cell_participants {
+.calendar_cell:hover~.calendar_cell_participants {
     visibility: visible;
 }
 
@@ -344,18 +414,15 @@ td:hover .calendar_cell_participants {
     background-color: inherit;
     border          : none;
     padding         : 3px;
+    cursor: pointer;
+    &:hover {
+        transform         : translateY(-8%) scale(1.2);
+        -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow   : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        box-shadow        : 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    }
 }
 
 .calendar_cell-del_btn::after {
-    content: '\2716';
-}
-
-#add_modal-error_btn {
-    background-color: inherit;
-    border          : none;
-    padding         : 3px;
-}
-
-#add_modal-error_btn::after {
     content: '\2716';
 }

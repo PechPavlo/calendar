@@ -1,5 +1,6 @@
 import '../assets/styles/style.scss';
 import init from './init';
+import { newElement } from './createElement';
 
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -41,8 +42,15 @@ const fillCalendarTable = () => {
   calendarItems.forEach((dayTime) => {
     const isInFilter = props.filteredBy === 'All' || props.calendar[dayTime].participants.includes(props.filteredBy);
     if (props.calendar[dayTime].isBooked && isInFilter) {
+      const cellParticipantsList = document.querySelector(`[data-cell_list=${dayTime}]`);
+      cellParticipantsList.innerHTML = '';
       document.querySelector(`[data-cell=${dayTime}]`).classList.toggle('booked', true);
       document.querySelector(`[data-cell_name=${dayTime}]`).textContent = props.calendar[dayTime].name;
+      props.calendar[dayTime].participants.forEach((participant) => {
+        const cellParticipant = newElement('li', 'calendar_cell_participant');
+        cellParticipant.textContent = participant;
+        cellParticipantsList.appendChild(cellParticipant);
+      });
     } else { document.querySelector(`[data-cell=${dayTime}]`).classList.toggle('booked', false); }
   });
 };
