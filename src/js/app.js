@@ -27,12 +27,18 @@ const deleteModal = document.querySelector('#delete-modal');
 const deleteEventName = document.querySelector('.delete_modal-subtitle');
 const noAddBtn = document.querySelector('#cancel_add');
 const deleteEventButtons = document.querySelectorAll('.calendar_cell-del_btn');
+const calendarCells = document.querySelectorAll('[data-time]');
+// const calendarCells = document.querySelectorAll('.calendar_cell');
 const addForm = document.querySelector('#add-form');
 const newName = document.querySelector('#new_event-name');
 const newDay = document.querySelector('.add_day');
 const newTime = document.querySelector('.add_time');
 
 let eventToDelete = '';
+let activeDataTime = '';
+let currentDataTime = '';
+// let nextDataTime = '';
+let isFree = false;
 
 const saveStorage = () => {
   localStorage.pechPavloCalendar = JSON.stringify(props);
@@ -114,6 +120,34 @@ const addModaltHandler = (event) => {
   if (event.target.id === 'add-modal') { addModal.classList.toggle('active'); }
   if (event.target.dataset.drop !== 'down') { addDropdown.classList.toggle('active', false); }
 };
+const dragendHandler = (event) => {
+  event.currentTarget.classList.remove('selected');
+  if (isFree) {
+    const movedTo = props.calendar[currentDataTime];
+    const movedFrom = props.calendar[activeDataTime];
+    movedTo.name = movedFrom.name;
+    movedTo.participants = movedFrom.participants;
+    movedTo.isBooked = true;
+    props.calendar[activeDataTime] = {
+      isBooked: false,
+      name: ' ',
+      participants: [],
+    };
+    fillCalendarTable();
+    saveStorage();
+  }
+};
+const dragoverHandler = (event) => {
+  event.preventDefault();
+  isFree = false;
+  const currentElement = event.target;
+  currentDataTime = currentElement.dataset.time;
+  if (!currentDataTime || !props.calendar[activeDataTime].isBooked) return;
+  const { isBooked } = props.calendar[currentDataTime];
+  const isMoveble = activeDataTime !== currentDataTime && !isBooked;
+  if (!isMoveble) return;
+  isFree = true;
+};
 
 const createEventHandler = (event) => {
   event.preventDefault();
@@ -138,10 +172,26 @@ const setupListeners = () => {
   newEventBtn.addEventListener('click', newEventHandler);
   noAddBtn.addEventListener('click', newEventHandler);
   errorButton.addEventListener('click', () => addModalError.classList.toggle('booked', false));
-  addDropdownMain.addEventListener('click', () => addDropdown.classList.toggle('active'));
-  membersToAddInput.addEventListener('click', (event) => event.stopPropagation());
-  membersToAddInput.addEventListener('click', (event) => event.preventDefault()); // ?
+  addDropdownMain.addEventListener('click', (event) => {
+    addDropdown.classList.toggle('active');
+    event.preventDefault();
+  });
   addModal.addEventListener('click', addModaltHandler);
+  calendarCells.forEach((cell) => {
+    cell.addEventListener('mousedown', (event) => {
+      event.currentTarget.classList.add('selected');
+    });
+    cell.addEventListener('mouseup', (event) => {
+      event.currentTarget.classList.remove('selected');
+    });
+    cell.addEventListener('dragstart', (event) => {
+      event.currentTarget.classList.add('selected');
+      activeDataTime = event.currentTarget.dataset.time;
+    });
+    cell.addEventListener('dragleave', () => { isFree = false; });
+    cell.addEventListener('dragend', dragendHandler);
+    cell.addEventListener('dragover', dragoverHandler);
+  });
   membersToAdd.forEach((el) => el.addEventListener('click', addDropdownHandler));
   deleteModal.addEventListener('click', deleteModalHandler);
   deleteEventButtons.forEach((button) => {

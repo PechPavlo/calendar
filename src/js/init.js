@@ -53,6 +53,7 @@ const init = (props) => {
           cellContainer.insertAdjacentElement('beforeend', delBtn);
           td.insertAdjacentElement('beforeend', cellContainer);
           td.insertAdjacentElement('beforeend', cellParticipants);
+          td.setAttribute('draggable', 'true');
           td.dataset.time = `${day}${time}`;
         } else { td.textContent = day; }
         row.insertAdjacentElement('beforeend', td);
@@ -73,8 +74,6 @@ const init = (props) => {
     const dropdownMain = newElement('div', 'add_dropdown-main', '', 'data-drop=down');
     const span = newElement('span', 'add_dropdown-selected', '', 'data-drop=down');
     const fakeSelect = newElement('select', 'add_dropdown-fake_select', '', 'data-drop=down');
-    const mainInput = newElement('input', '', 'add_select', 'form=add-form', 'required=');
-    mainInput.setAttribute('data-drop', 'down');
     const dropdownContent = newElement('div', 'add_dropdown-content', '', 'data-drop=down');
     props.team.forEach((member) => {
       const label = newElement('label', 'member', '', 'data-drop=down');
@@ -85,7 +84,6 @@ const init = (props) => {
     });
     span.textContent = 'choose participiants';
     dropdownMain.insertAdjacentElement('beforeend', span);
-    dropdownMain.insertAdjacentElement('beforeend', mainInput);
     dropdownMain.insertAdjacentElement('beforeend', fakeSelect);
     dropdown.insertAdjacentElement('beforeend', dropdownMain);
     dropdown.insertAdjacentElement('beforeend', dropdownContent);
@@ -98,6 +96,8 @@ const init = (props) => {
     const members = createAddDropdown();
     const name = newElement('label', 'add_lable');
     const participants = newElement('label', 'add_lable', '', 'for=add_select');
+    const participantsInput = newElement('input', '', 'add_select', 'form=add-form', 'required=');
+    participantsInput.setAttribute('data-drop', 'down');
     const day = newElement('label', 'add_lable');
     const time = newElement('label', 'add_lable');
     name.textContent = 'Name of the event:';
@@ -105,6 +105,7 @@ const init = (props) => {
     day.textContent = 'Day:';
     time.textContent = 'Time:';
     participants.insertAdjacentElement('beforeend', members);
+    participants.insertAdjacentElement('beforeend', participantsInput);
     day.insertAdjacentElement('beforeend', createSelect(props.days, 'add_day', 'day', 'Monday'));
     time.insertAdjacentElement('beforeend', createSelect(props.times, 'add_time', 'time', 10));
     name.insertAdjacentElement('beforeend', formInput);
