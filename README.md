@@ -23,4 +23,5 @@
 As an optional requirement, I've implemented the possibility to change meeting day/time using drag and drop technique on the “Calendar” view.
 
 I've used only pure Javascript, SCSS preprocessor,  Webpack, and EsLint with  Airbnb config.
+
 For saving user's scheduler settings used LocalStorage.
