@@ -2,7 +2,7 @@
 ## It's a "Calendar".
 ### The test task to Ciklum University JS Band internship.
 
-#### You can find a live version of the page [here](https://pechpavlo.github.io/Calendar/)
+#### You can find a live version of the page [here](https://pechpavlo.github.io/calendar/)
 
 #### Description.
 * It's  a meeting scheduler application for one meeting room;
@@ -23,4 +23,5 @@
 As an optional requirement, I've implemented the possibility to change meeting day/time using drag and drop technique on the “Calendar” view.
 
 I've used only pure Javascript, SCSS preprocessor,  Webpack, and EsLint with  Airbnb config.
+
 For saving user's scheduler settings used LocalStorage.
