@@ -4,6 +4,15 @@
 
 #### You can find a live version of the page [here](https://pechpavlo.github.io/calendar/)
 
+### To start project locally you need:
+
+1. Fork this repository
+2. Checkout to develop branch
+3. Navigate to the front folder
+4. ```npm i```
+5. ```npm run start```
+6. you are in business!
+
 #### Description.
 * It's  a meeting scheduler application for one meeting room;
 * Application has two screens: “Calendar” screen and “Create event” screen;

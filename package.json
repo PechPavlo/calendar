@@ -1,7 +1,7 @@
 {
   "name": "calendar",
   "version": "1.0.0",
-  "homepage": "http://PechPavlo.github.io/Calendar",
+  "homepage": "http://PechPavlo.github.io/calendar",
   "description": "test task to Ciklum University JS Band internship",
   "main": "main.js",
   "scripts": {
