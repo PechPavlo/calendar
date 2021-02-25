@@ -1,4 +1,5 @@
 import { newElement, createSelect } from './createElement';
+import { User, Admin } from './users';
 
 const init = (props) => {
   const body = document.querySelector('body');
@@ -26,10 +27,21 @@ const init = (props) => {
     });
   };
 
+  const getInitialUsers = () => {
+    newProps.users = props.team.map((member, index) => new User(index, member));
+    props.users.push(new Admin(props.users.length, 'Boss'));
+  };
+
   if (localProps && JSON.parse(localProps).release === props.release) {
     newProps.calendar = JSON.parse(localProps).calendar;
     newProps.calendarItemsList = JSON.parse(localProps).calendarItemsList;
-  } else { createInitCalendar(); }
+    newProps.users = JSON.parse(localProps).users;
+    newProps.currentUser = JSON.parse(localProps).currentUser;
+    newProps.isAdmin = JSON.parse(localProps).isAdmin;
+  } else {
+    createInitCalendar();
+    getInitialUsers();
+  }
 
   const createTable = () => {
     const tabel = newElement('table', 'calendar');
@@ -164,14 +176,14 @@ const init = (props) => {
     const modalWrapper = newElement('div', 'modal_wrapper active', 'authorize-modal');
     const modal = newElement('div', 'authorize_modal-container');
     const modalTitle = newElement('span', 'authorize_modal-title');
-    // const modalSelect = newElement('span', 'authorize_modal-subtitle');
     const modalFooter = newElement('div', 'authorize_modal-footer');
     const confirmButton = newElement('button', 'confirm_authorize_modal-btn', 'confirm_user');
+    const namesOfUsersList = props.users.map((user) => user.name);
     modalTitle.textContent = 'Please authorize';
     confirmButton.textContent = 'Confirm';
     modalFooter.insertAdjacentElement('beforeend', confirmButton);
     modal.insertAdjacentElement('beforeend', modalTitle);
-    modal.insertAdjacentElement('beforeend', createSelect(props.team, 'autorized-by', 'user', props.currentUser));
+    modal.insertAdjacentElement('beforeend', createSelect(namesOfUsersList, 'autorized-by', 'user', props.currentUser.name));
     modal.insertAdjacentElement('beforeend', modalFooter);
     modalWrapper.insertAdjacentElement('beforeend', modal);
     return modalWrapper;

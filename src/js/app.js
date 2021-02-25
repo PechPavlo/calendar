@@ -1,19 +1,21 @@
 import '../assets/styles/style.scss';
 import init from './init';
 import { newElement } from './createElement';
+// import { User, Admin } from './users';
 
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   filteredBy: 'All',
-  release: '1.1',
+  release: '1.2',
   team: ['Maria', 'Bob', 'Alex', 'John'],
-  // team: ['Maria', 'Bob', 'Alex', 'John', 'All'],
-  currentUser: 'Bob',
+  users: [],
+  currentUser: {},
   isAdmin: true,
   times: [10, 11, 12, 13, 14, 15, 16, 17, 18],
   calendar: {},
   calendarItemsList: [],
 };
+
 init(props);
 const calendarItems = props.calendarItemsList;
 const filteredBy = document.querySelector('#filter');
@@ -33,7 +35,6 @@ const deleteEventName = document.querySelector('.delete_modal-subtitle');
 const noAddBtn = document.querySelector('#cancel_add');
 const deleteEventButtons = document.querySelectorAll('.calendar_cell-del_btn');
 const calendarCells = document.querySelectorAll('[data-time]');
-// const calendarCells = document.querySelectorAll('.calendar_cell');
 const addForm = document.querySelector('#add-form');
 const newName = document.querySelector('#new_event-name');
 const newDay = document.querySelector('.add_day');
@@ -42,7 +43,6 @@ const newTime = document.querySelector('.add_time');
 let eventToDelete = '';
 let activeDataTime = '';
 let currentDataTime = '';
-// let nextDataTime = '';
 let isFree = false;
 
 const saveStorage = () => {
@@ -60,9 +60,9 @@ const setPermissions = () => {
 };
 
 const authorization = () => {
-  props.currentUser = autorizedBy.value;
-  props.isAdmin = false;
-  console.log(props.currentUser);
+  props.currentUser = props.users.find((user) => user.name === autorizedBy.value);
+  props.isAdmin = props.currentUser.isAdmin;
+  setPermissions();
 };
 
 const fillCalendarTable = () => {
@@ -115,13 +115,6 @@ const authorizeModalHandler = (event) => {
   if (event.target.id === 'confirm_user') {
     authorization();
     authorizeModal.classList.toggle('active', false);
-    // document.querySelector(`[data-cell=${eventToDelete}]`).classList.toggle('booked', false);
-    // props.calendar[eventToDelete] = {
-    //   isBooked: false,
-    //   name: ' ',
-    //   participants: [],
-    // };
-    // fillCalendarTable();
     saveStorage();
   }
 };
@@ -200,6 +193,7 @@ const createEventHandler = (event) => {
     addModal.classList.toggle('active');
   }
   fillCalendarTable();
+  setPermissions();
   saveStorage();
 };
 
