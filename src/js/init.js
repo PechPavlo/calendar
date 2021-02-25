@@ -1,4 +1,5 @@
 import { newElement, createSelect } from './createElement';
+import { User, Admin } from './users';
 
 const init = (props) => {
   const body = document.querySelector('body');
@@ -26,10 +27,21 @@ const init = (props) => {
     });
   };
 
+  const getInitialUsers = () => {
+    newProps.users = props.team.map((member, index) => new User(index, member));
+    props.users.push(new Admin(props.users.length, 'Boss'));
+  };
+
   if (localProps && JSON.parse(localProps).release === props.release) {
     newProps.calendar = JSON.parse(localProps).calendar;
     newProps.calendarItemsList = JSON.parse(localProps).calendarItemsList;
-  } else { createInitCalendar(); }
+    newProps.users = JSON.parse(localProps).users;
+    newProps.currentUser = JSON.parse(localProps).currentUser;
+    newProps.isAdmin = JSON.parse(localProps).isAdmin;
+  } else {
+    createInitCalendar();
+    getInitialUsers();
+  }
 
   const createTable = () => {
     const tabel = newElement('table', 'calendar');
@@ -64,7 +76,7 @@ const init = (props) => {
   };
 
   const createFilter = () => {
-    const filter = createSelect(props.team, 'filtered-by', 'member', 'All');
+    const filter = createSelect([...props.team, 'All'], 'filtered-by', 'member', 'All');
     filter.setAttribute('id', 'filter');
     return filter;
   };
@@ -75,7 +87,7 @@ const init = (props) => {
     const span = newElement('span', 'add_dropdown-selected', '', 'data-drop=down');
     const fakeSelect = newElement('select', 'add_dropdown-fake_select', '', 'data-drop=down');
     const dropdownContent = newElement('div', 'add_dropdown-content', '', 'data-drop=down');
-    props.team.forEach((member) => {
+    [...props.team, 'All'].forEach((member) => {
       const label = newElement('label', 'member', '', 'data-drop=down');
       const input = newElement('input', 'member-selected-to-add', '', 'type=checkbox', `value=${member}`, 'data-drop=down');
       label.textContent = member === 'All' ? 'All members' : member;
@@ -114,6 +126,12 @@ const init = (props) => {
     form.insertAdjacentElement('beforeend', day);
     form.insertAdjacentElement('beforeend', time);
     return form;
+  };
+
+  const changeUserButton = () => {
+    const changeButton = newElement('button', 'change_user-btn');
+    changeButton.textContent = 'Change User';
+    return changeButton;
   };
 
   const addEventModal = () => {
@@ -160,13 +178,31 @@ const init = (props) => {
     return modalWrapper;
   };
 
+  const authorizeUserModal = () => {
+    const modalWrapper = newElement('div', 'modal_wrapper active', 'authorize-modal');
+    const modal = newElement('div', 'authorize_modal-container');
+    const modalTitle = newElement('span', 'authorize_modal-title');
+    const modalFooter = newElement('div', 'authorize_modal-footer');
+    const confirmButton = newElement('button', 'confirm_authorize_modal-btn', 'confirm_user');
+    const namesOfUsersList = props.users.map((user) => user.name);
+    modalTitle.textContent = 'Please authorize';
+    confirmButton.textContent = 'Confirm';
+    modalFooter.insertAdjacentElement('beforeend', confirmButton);
+    modal.insertAdjacentElement('beforeend', modalTitle);
+    modal.insertAdjacentElement('beforeend', createSelect(namesOfUsersList, 'autorized-by', 'user', props.currentUser.name));
+    modal.insertAdjacentElement('beforeend', modalFooter);
+    modalWrapper.insertAdjacentElement('beforeend', modal);
+    return modalWrapper;
+  };
+
   menuTitle.textContent = 'Calendar';
   addButton.textContent = 'New event +';
   body.insertAdjacentElement('beforeend', addEventModal());
   body.insertAdjacentElement('beforeend', deleteEventModal());
+  body.insertAdjacentElement('beforeend', authorizeUserModal());
   topContainer.insertAdjacentElement('afterbegin', menuTitle);
   controls.insertAdjacentElement('beforeend', createFilter());
-  // controls.insertAdjacentElement('beforeend', createFilterDropdown());
+  controls.insertAdjacentElement('beforeend', changeUserButton());
   controls.insertAdjacentElement('beforeend', addButton);
   topContainer.insertAdjacentElement('beforeend', controls);
   container.insertAdjacentElement('beforeend', topContainer);

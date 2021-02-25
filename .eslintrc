@@ -2,7 +2,8 @@
   "parser": "babel-eslint",
   "rules": {
     "no-unused-vars": "warn",
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "max-classes-per-file": ["error", 2]
   },
   "env": {
     "es2021": true,

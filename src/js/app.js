@@ -1,16 +1,21 @@
 import '../assets/styles/style.scss';
 import init from './init';
 import { newElement } from './createElement';
+// import { User, Admin } from './users';
 
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   filteredBy: 'All',
-  release: '1.1',
-  team: ['Maria', 'Bob', 'Alex', 'John', 'All'],
+  release: '1.2',
+  team: ['Maria', 'Bob', 'Alex', 'John'],
+  users: [],
+  currentUser: {},
+  isAdmin: true,
   times: [10, 11, 12, 13, 14, 15, 16, 17, 18],
   calendar: {},
   calendarItemsList: [],
 };
+
 init(props);
 const calendarItems = props.calendarItemsList;
 const filteredBy = document.querySelector('#filter');
@@ -24,11 +29,13 @@ const addDropdown = document.querySelector('.add_dropdown');
 const addDropdownMain = document.querySelector('.add_dropdown-main');
 const errorButton = document.querySelector('#add_modal-error_btn');
 const deleteModal = document.querySelector('#delete-modal');
+const authorizeModal = document.querySelector('#authorize-modal');
+const autorizedBy = document.querySelector('.autorized-by');
+const changeUserButton = document.querySelector('.change_user-btn');
 const deleteEventName = document.querySelector('.delete_modal-subtitle');
 const noAddBtn = document.querySelector('#cancel_add');
 const deleteEventButtons = document.querySelectorAll('.calendar_cell-del_btn');
 const calendarCells = document.querySelectorAll('[data-time]');
-// const calendarCells = document.querySelectorAll('.calendar_cell');
 const addForm = document.querySelector('#add-form');
 const newName = document.querySelector('#new_event-name');
 const newDay = document.querySelector('.add_day');
@@ -37,11 +44,26 @@ const newTime = document.querySelector('.add_time');
 let eventToDelete = '';
 let activeDataTime = '';
 let currentDataTime = '';
-// let nextDataTime = '';
 let isFree = false;
 
 const saveStorage = () => {
   localStorage.pechPavloCalendar = JSON.stringify(props);
+};
+
+const setPermissions = () => {
+  newEventBtn.classList.toggle('hidden', !props.isAdmin);
+  deleteEventButtons.forEach((button) => {
+    button.classList.toggle('hidden', !props.isAdmin);
+  });
+  calendarCells.forEach((cell) => {
+    cell.toggleAttribute('draggable', props.isAdmin);
+  });
+};
+
+const authorization = () => {
+  props.currentUser = props.users.find((user) => user.name === autorizedBy.value);
+  props.isAdmin = props.currentUser.isAdmin;
+  setPermissions();
 };
 
 const fillCalendarTable = () => {
@@ -85,6 +107,15 @@ const deleteModalHandler = (event) => {
       participants: [],
     };
     fillCalendarTable();
+    saveStorage();
+  }
+};
+
+const authorizeModalHandler = (event) => {
+  if (event.target.id === 'authorize-modal') { authorizeModal.classList.toggle('active'); }
+  if (event.target.id === 'confirm_user') {
+    authorization();
+    authorizeModal.classList.toggle('active', false);
     saveStorage();
   }
 };
@@ -163,6 +194,7 @@ const createEventHandler = (event) => {
     addModal.classList.toggle('active');
   }
   fillCalendarTable();
+  setPermissions();
   saveStorage();
 };
 
@@ -184,6 +216,9 @@ const setupListeners = () => {
     cell.addEventListener('mouseup', (event) => {
       event.currentTarget.classList.remove('selected');
     });
+    cell.addEventListener('mouseleave', (event) => {
+      event.currentTarget.classList.remove('selected');
+    });
     cell.addEventListener('dragstart', (event) => {
       event.currentTarget.classList.add('selected');
       activeDataTime = event.currentTarget.dataset.time;
@@ -194,6 +229,8 @@ const setupListeners = () => {
   });
   membersToAdd.forEach((el) => el.addEventListener('click', addDropdownHandler));
   deleteModal.addEventListener('click', deleteModalHandler);
+  authorizeModal.addEventListener('click', authorizeModalHandler);
+  changeUserButton.addEventListener('click', () => authorizeModal.classList.toggle('active', true));
   deleteEventButtons.forEach((button) => {
     button.addEventListener('click', deleteEventHandler);
   });
@@ -201,4 +238,6 @@ const setupListeners = () => {
 
 setupListeners();
 fillCalendarTable();
+authorization();
+setPermissions();
 saveStorage();
