@@ -64,7 +64,7 @@ const init = (props) => {
   };
 
   const createFilter = () => {
-    const filter = createSelect(props.team, 'filtered-by', 'member', 'All');
+    const filter = createSelect([...props.team, 'All'], 'filtered-by', 'member', 'All');
     filter.setAttribute('id', 'filter');
     return filter;
   };
@@ -75,7 +75,7 @@ const init = (props) => {
     const span = newElement('span', 'add_dropdown-selected', '', 'data-drop=down');
     const fakeSelect = newElement('select', 'add_dropdown-fake_select', '', 'data-drop=down');
     const dropdownContent = newElement('div', 'add_dropdown-content', '', 'data-drop=down');
-    props.team.forEach((member) => {
+    [...props.team, 'All'].forEach((member) => {
       const label = newElement('label', 'member', '', 'data-drop=down');
       const input = newElement('input', 'member-selected-to-add', '', 'type=checkbox', `value=${member}`, 'data-drop=down');
       label.textContent = member === 'All' ? 'All members' : member;
@@ -160,10 +160,28 @@ const init = (props) => {
     return modalWrapper;
   };
 
+  const authorizeUserModal = () => {
+    const modalWrapper = newElement('div', 'modal_wrapper active', 'authorize-modal');
+    const modal = newElement('div', 'authorize_modal-container');
+    const modalTitle = newElement('span', 'authorize_modal-title');
+    // const modalSelect = newElement('span', 'authorize_modal-subtitle');
+    const modalFooter = newElement('div', 'authorize_modal-footer');
+    const confirmButton = newElement('button', 'confirm_authorize_modal-btn', 'confirm_user');
+    modalTitle.textContent = 'Please authorize';
+    confirmButton.textContent = 'Confirm';
+    modalFooter.insertAdjacentElement('beforeend', confirmButton);
+    modal.insertAdjacentElement('beforeend', modalTitle);
+    modal.insertAdjacentElement('beforeend', createSelect(props.team, 'autorized-by', 'user', props.currentUser));
+    modal.insertAdjacentElement('beforeend', modalFooter);
+    modalWrapper.insertAdjacentElement('beforeend', modal);
+    return modalWrapper;
+  };
+
   menuTitle.textContent = 'Calendar';
   addButton.textContent = 'New event +';
   body.insertAdjacentElement('beforeend', addEventModal());
   body.insertAdjacentElement('beforeend', deleteEventModal());
+  body.insertAdjacentElement('beforeend', authorizeUserModal());
   topContainer.insertAdjacentElement('afterbegin', menuTitle);
   controls.insertAdjacentElement('beforeend', createFilter());
   // controls.insertAdjacentElement('beforeend', createFilterDropdown());
