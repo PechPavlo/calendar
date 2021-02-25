@@ -31,6 +31,7 @@ const errorButton = document.querySelector('#add_modal-error_btn');
 const deleteModal = document.querySelector('#delete-modal');
 const authorizeModal = document.querySelector('#authorize-modal');
 const autorizedBy = document.querySelector('.autorized-by');
+const changeUserButton = document.querySelector('.change_user-btn');
 const deleteEventName = document.querySelector('.delete_modal-subtitle');
 const noAddBtn = document.querySelector('#cancel_add');
 const deleteEventButtons = document.querySelectorAll('.calendar_cell-del_btn');
@@ -229,6 +230,7 @@ const setupListeners = () => {
   membersToAdd.forEach((el) => el.addEventListener('click', addDropdownHandler));
   deleteModal.addEventListener('click', deleteModalHandler);
   authorizeModal.addEventListener('click', authorizeModalHandler);
+  changeUserButton.addEventListener('click', () => authorizeModal.classList.toggle('active', true));
   deleteEventButtons.forEach((button) => {
     button.addEventListener('click', deleteEventHandler);
   });

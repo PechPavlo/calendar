@@ -128,6 +128,12 @@ const init = (props) => {
     return form;
   };
 
+  const changeUserButton = () => {
+    const changeButton = newElement('button', 'change_user-btn');
+    changeButton.textContent = 'Change User';
+    return changeButton;
+  };
+
   const addEventModal = () => {
     const modalWrapper = newElement('div', 'modal_wrapper', 'add-modal');
     const modal = newElement('div', 'add_modal-container');
@@ -196,7 +202,7 @@ const init = (props) => {
   body.insertAdjacentElement('beforeend', authorizeUserModal());
   topContainer.insertAdjacentElement('afterbegin', menuTitle);
   controls.insertAdjacentElement('beforeend', createFilter());
-  // controls.insertAdjacentElement('beforeend', createFilterDropdown());
+  controls.insertAdjacentElement('beforeend', changeUserButton());
   controls.insertAdjacentElement('beforeend', addButton);
   topContainer.insertAdjacentElement('beforeend', controls);
   container.insertAdjacentElement('beforeend', topContainer);
