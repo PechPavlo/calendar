@@ -4,6 +4,15 @@
 
 #### You can find a live version of the page [here](https://pechpavlo.github.io/calendar/)
 
+### To start project locally you need:
+
+1. Fork this repository
+2. Checkout to develop branch
+3. Navigate to the front folder
+4. ```npm i```
+5. ```npm run start```
+6. you are in business!
+
 #### Description.
 * It's  a meeting scheduler application for one meeting room;
 * Application has two screens: “Calendar” screen and “Create event” screen;
@@ -25,3 +34,10 @@ As an optional requirement, I've implemented the possibility to change meeting d
 I've used only pure Javascript, SCSS preprocessor,  Webpack, and EsLint with  Airbnb config.
 
 For saving user's scheduler settings used LocalStorage.
+
+#### Homework 1 feature requirements
+
+* Each team member should belong either to User class or Admin class.;
+* When user opens an application he/she has to authorize himself using the select modal (like in the example mockup);
+* If authorized user is Admin he is able to create and update events(if Drag and Drop was implemented in your test task);
+* If authorized user is User he/she is not able to create/update events. This means that 'Create Event' button should be hidden for those users.
