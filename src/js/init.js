@@ -75,8 +75,10 @@ const init = (props) => {
     return tabel;
   };
 
+  const namesOfUsersList = props.users.map((user) => user.name);
+
   const createFilter = () => {
-    const filter = createSelect([...props.team, 'All'], 'filtered-by', 'member', 'All');
+    const filter = createSelect([...namesOfUsersList, 'All'], 'filtered-by', 'member', 'All');
     filter.setAttribute('id', 'filter');
     return filter;
   };
@@ -87,7 +89,7 @@ const init = (props) => {
     const span = newElement('span', 'add_dropdown-selected', '', 'data-drop=down');
     const fakeSelect = newElement('select', 'add_dropdown-fake_select', '', 'data-drop=down');
     const dropdownContent = newElement('div', 'add_dropdown-content', '', 'data-drop=down');
-    [...props.team, 'All'].forEach((member) => {
+    [...namesOfUsersList, 'All'].forEach((member) => {
       const label = newElement('label', 'member', '', 'data-drop=down');
       const input = newElement('input', 'member-selected-to-add', '', 'type=checkbox', `value=${member}`, 'data-drop=down');
       label.textContent = member === 'All' ? 'All members' : member;
@@ -184,7 +186,6 @@ const init = (props) => {
     const modalTitle = newElement('span', 'authorize_modal-title');
     const modalFooter = newElement('div', 'authorize_modal-footer');
     const confirmButton = newElement('button', 'confirm_authorize_modal-btn', 'confirm_user');
-    const namesOfUsersList = props.users.map((user) => user.name);
     modalTitle.textContent = 'Please authorize';
     confirmButton.textContent = 'Confirm';
     modalFooter.insertAdjacentElement('beforeend', confirmButton);
