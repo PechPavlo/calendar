@@ -3,6 +3,7 @@ export class User {
     this.isAdmin = false;
     this.id = id;
     this.name = name;
+    this.password = '';
   }
 }
 

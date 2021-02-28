@@ -6,7 +6,7 @@ import { newElement } from './createElement';
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   filteredBy: 'All',
-  release: '1.2',
+  release: '1.3',
   team: ['Maria', 'Bob', 'Alex', 'John'],
   users: [],
   currentUser: {},
