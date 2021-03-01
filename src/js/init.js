@@ -1,5 +1,8 @@
 import { newElement, createSelect } from './createElement';
-import { User, Admin } from './users';
+// import { User, Admin } from './users';
+// import {
+//   createNewEntity, getEntities,
+// } from './services/API_servise';
 
 const init = (props) => {
   const body = document.querySelector('body');
@@ -17,30 +20,23 @@ const init = (props) => {
     props.days.forEach((day) => {
       props.times.forEach((time) => {
         calendarItemsList.push(`${day}${time}`);
-        const calendarItem = props.calendar;
-        calendarItem[`${day}${time}`] = {
-          isBooked: false,
-          name: ' ',
-          participants: [],
-        };
       });
     });
   };
 
-  const getInitialUsers = () => {
-    newProps.users = props.team.map((member, index) => new User(index, member));
-    props.users.push(new Admin(props.users.length, 'Boss'));
-  };
+  // const getInitialUsers = () => {
+  //   newProps.users = props.team.map((member) => new User(member, ''));
+  //   props.users.push(new Admin('Boss', 'superPassword'));
+  // };
 
   if (localProps && JSON.parse(localProps).release === props.release) {
-    newProps.calendar = JSON.parse(localProps).calendar;
     newProps.calendarItemsList = JSON.parse(localProps).calendarItemsList;
-    newProps.users = JSON.parse(localProps).users;
+    // newProps.users = JSON.parse(localProps).users;
     newProps.currentUser = JSON.parse(localProps).currentUser;
     newProps.isAdmin = JSON.parse(localProps).isAdmin;
   } else {
     createInitCalendar();
-    getInitialUsers();
+    // getInitialUsers();
   }
 
   const createTable = () => {
@@ -75,7 +71,7 @@ const init = (props) => {
     return tabel;
   };
 
-  const namesOfUsersList = props.users.map((user) => user.name);
+  const namesOfUsersList = props.users.map((user) => user.data.name);
 
   const createFilter = () => {
     const filter = createSelect([...namesOfUsersList, 'All'], 'filtered-by', 'member', 'All');
@@ -190,7 +186,7 @@ const init = (props) => {
     confirmButton.textContent = 'Confirm';
     modalFooter.insertAdjacentElement('beforeend', confirmButton);
     modal.insertAdjacentElement('beforeend', modalTitle);
-    modal.insertAdjacentElement('beforeend', createSelect(namesOfUsersList, 'autorized-by', 'user', props.currentUser.name));
+    modal.insertAdjacentElement('beforeend', createSelect(namesOfUsersList, 'autorized-by', 'user', props.currentUser.data.name));
     modal.insertAdjacentElement('beforeend', modalFooter);
     modalWrapper.insertAdjacentElement('beforeend', modal);
     return modalWrapper;
