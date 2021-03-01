@@ -1,6 +1,10 @@
 import '../assets/styles/style.scss';
 import init from './init';
+import MyEvent from './MyEvent';
 import { newElement } from './createElement';
+import {
+  createNewEntity, changeEntity, getEntities, deleteEntity,
+} from './services/API_servise';
 // import { User, Admin } from './users';
 
 const props = {
@@ -13,10 +17,12 @@ const props = {
   isAdmin: true,
   times: [10, 11, 12, 13, 14, 15, 16, 17, 18],
   calendar: {},
+  events: [],
   calendarItemsList: [],
 };
 
 init(props);
+
 const calendarItems = props.calendarItemsList;
 const filteredBy = document.querySelector('#filter');
 const newEventBtn = document.querySelector('.add-event-btn');
@@ -68,13 +74,14 @@ const authorization = () => {
 
 const fillCalendarTable = () => {
   calendarItems.forEach((dayTime) => {
-    const isInFilter = props.filteredBy === 'All' || props.calendar[dayTime].participants.includes(props.filteredBy);
-    if (props.calendar[dayTime].isBooked && isInFilter) {
+    const myEvent = props.events.find((elem) => elem.data.dayTime === dayTime)?.data;
+    const isInFilter = props.filteredBy === 'All' || myEvent?.participants.includes(props.filteredBy);
+    if (myEvent && isInFilter) {
       const cellParticipantsList = document.querySelector(`[data-cell_list=${dayTime}]`);
       cellParticipantsList.innerHTML = '';
       document.querySelector(`[data-cell=${dayTime}]`).classList.toggle('booked', true);
-      document.querySelector(`[data-cell_name=${dayTime}]`).textContent = props.calendar[dayTime].name;
-      props.calendar[dayTime].participants.forEach((participant) => {
+      document.querySelector(`[data-cell_name=${dayTime}]`).textContent = myEvent.eventName;
+      myEvent.participants.forEach((participant) => {
         const cellParticipant = newElement('li', 'calendar_cell_participant');
         cellParticipant.textContent = participant;
         cellParticipantsList.appendChild(cellParticipant);
@@ -83,10 +90,17 @@ const fillCalendarTable = () => {
   });
 };
 
+const getEventsFromBack = async () => {
+  props.events = await getEntities('events') || [];
+  // console.log(props.events);
+  // props.events?.map((myEvent) => deleteEntity('events', myEvent.id));
+  fillCalendarTable();
+};
+
 const deleteEventHandler = (event) => {
   const dayTime = event.target.dataset.del_btn;
-  eventToDelete = dayTime;
-  deleteEventName.textContent = `"${props.calendar[dayTime].name}" event?`;
+  eventToDelete = props.events.find((myEvent) => myEvent.data.dayTime === dayTime);
+  deleteEventName.textContent = `"${eventToDelete.data.eventName}" event?`;
   deleteModal.classList.toggle('active', true);
 };
 
@@ -96,16 +110,13 @@ const filterHandler = (event) => {
   fillCalendarTable();
 };
 
-const deleteModalHandler = (event) => {
+const deleteModalHandler = async (event) => {
   if (event.target.id === 'delete-modal' || event.target.id === 'no_delete') { deleteModal.classList.toggle('active'); }
   if (event.target.id === 'yes_delete') {
     deleteModal.classList.toggle('active', false);
-    document.querySelector(`[data-cell=${eventToDelete}]`).classList.toggle('booked', false);
-    props.calendar[eventToDelete] = {
-      isBooked: false,
-      name: ' ',
-      participants: [],
-    };
+    document.querySelector(`[data-cell=${eventToDelete.data.dayTime}]`).classList.toggle('booked', false);
+    await deleteEntity('events', eventToDelete.id);
+    getEventsFromBack();
     fillCalendarTable();
     saveStorage();
   }
@@ -180,17 +191,14 @@ const dragoverHandler = (event) => {
   isFree = true;
 };
 
-const createEventHandler = (event) => {
+const createEventHandler = async (event) => {
   event.preventDefault();
   const membersList = membersToAddInput.value.split(',');
-  if (props.calendar[`${newDay.value}${newTime.value}`].isBooked) {
+  if (props.events.find((myEvent) => myEvent.data.dayTime === `${newDay.value}${newTime.value}`)) {
     addModalError.classList.toggle('booked', true);
   } else {
-    props.calendar[`${newDay.value}${newTime.value}`] = {
-      isBooked: true,
-      name: newName.value,
-      participants: membersList,
-    };
+    const myNewEvent = await createNewEntity('events', new MyEvent(newDay.value, newTime.value, newName.value, membersList));
+    props.events.push(myNewEvent);
     addModal.classList.toggle('active');
   }
   fillCalendarTable();
@@ -238,6 +246,7 @@ const setupListeners = () => {
 
 setupListeners();
 fillCalendarTable();
+getEventsFromBack();
 authorization();
 setPermissions();
 saveStorage();

@@ -28,8 +28,8 @@ const init = (props) => {
   };
 
   const getInitialUsers = () => {
-    newProps.users = props.team.map((member, index) => new User(index, member));
-    props.users.push(new Admin(props.users.length, 'Boss'));
+    newProps.users = props.team.map((member, index) => new User(index, member, ''));
+    props.users.push(new Admin(props.users.length, 'Boss', 'superPassword'));
   };
 
   if (localProps && JSON.parse(localProps).release === props.release) {
