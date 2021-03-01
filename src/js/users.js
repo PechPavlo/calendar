@@ -1,15 +1,14 @@
 export class User {
-  constructor(id, name, password) {
+  constructor(name, password) {
     this.isAdmin = false;
-    this.id = id;
     this.name = name;
     this.password = password;
   }
 }
 
 export class Admin extends User {
-  constructor(id, name, password) {
-    super(id, name, password);
+  constructor(name, password) {
+    super(name, password);
     this.isAdmin = true;
   }
 }

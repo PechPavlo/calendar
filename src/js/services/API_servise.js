@@ -58,7 +58,7 @@ export const getEntities = async (entity) => {
       method: 'get',
     });
     const json = await response.json();
-    result = json?.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) }));
+    result = json?.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) })) || null;
   } catch (error) {
     console.error('Error:', error);
   }
