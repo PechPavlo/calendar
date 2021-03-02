@@ -10,7 +10,7 @@ import { User, Admin } from './users';
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   filteredBy: 'All',
-  release: '1.4',
+  release: '1.6',
   team: ['Maria', 'Bob', 'Alex', 'John'],
   users: [],
   currentUser: {},
