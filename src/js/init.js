@@ -32,11 +32,13 @@ const init = (props) => {
   if (localProps && JSON.parse(localProps).release === props.release) {
     newProps.calendarItemsList = JSON.parse(localProps).calendarItemsList;
     // newProps.users = JSON.parse(localProps).users;
-    newProps.currentUser = JSON.parse(localProps).currentUser;
+    newProps.currentUser = JSON.parse(localProps).currentUser || props.users[0];
     newProps.isAdmin = JSON.parse(localProps).isAdmin;
   } else {
     createInitCalendar();
     // getInitialUsers();
+    const newCurrentUser = props.users[0];
+    newProps.currentUser = newCurrentUser;
   }
 
   const createTable = () => {
