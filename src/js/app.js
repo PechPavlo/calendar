@@ -12,7 +12,7 @@ const props = {
   filteredBy: 'All',
   release: '1.6',
   team: ['Maria', 'Bob', 'Alex', 'John'],
-  users: [],
+  users: [{ id: 'a6a136dc-fd2b-4073-a1ae-214589cc73e6', data: { isAdmin: true, name: 'test', password: '' } }],
   currentUser: {},
   isAdmin: true,
   times: [10, 11, 12, 13, 14, 15, 16, 17, 18],
