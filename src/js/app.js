@@ -2,9 +2,10 @@ import '../assets/styles/style.scss';
 import init from './init';
 import MyEvent from './MyEvent';
 import { newElement } from './createElement';
-import {
-  createNewEntity, changeEntity, getEntities, deleteEntity,
-} from './services/API_servise';
+// import {
+//   createNewEntity, changeEntity, getEntities, deleteEntity,
+// } from './services/API_service';
+import ServiceAPI from './services/API_service_singltone';
 import { User, Admin } from './users';
 
 const props = {
@@ -13,7 +14,7 @@ const props = {
   release: '1.6',
   team: ['Maria', 'Bob', 'Alex', 'John'],
   users: [{ id: 'a6a136dc-fd2b-4073-a1ae-214589cc73e6', data: { isAdmin: true, name: 'test', password: '' } }],
-  currentUser: {},
+  currentUser: { id: 'a6a136dc-fd2b-4073-a1ae-214589cc73e6', data: { isAdmin: true, name: 'test', password: '' } },
   isAdmin: true,
   times: [10, 11, 12, 13, 14, 15, 16, 17, 18],
   isUsersDataLoaded: false,
@@ -63,7 +64,7 @@ const main = () => {
       button.classList.toggle('hidden', !props.isAdmin);
     });
     calendarCells.forEach((cell) => {
-      cell.toggleAttribute('draggable', props.isAdmin);
+      cell.setAttribute('draggable', props.isAdmin);
     });
   };
 
@@ -92,7 +93,7 @@ const main = () => {
   };
 
   const getEventsFromBack = async () => {
-    props.events = await getEntities('events') || [];
+    props.events = await ServiceAPI.get('events') || [];
     // console.log(props.events);
     // props.events?.map((myEvent) => deleteEntity('events', myEvent.id));
     fillCalendarTable();
@@ -116,7 +117,7 @@ const main = () => {
     if (event.target.id === 'yes_delete') {
       deleteModal.classList.toggle('active', false);
       document.querySelector(`[data-cell=${eventToDelete.data.dayTime}]`).classList.toggle('booked', false);
-      await deleteEntity('events', eventToDelete.id);
+      await ServiceAPI.delete('events', eventToDelete.id);
       getEventsFromBack();
       fillCalendarTable();
       saveStorage();
@@ -128,6 +129,7 @@ const main = () => {
     if (event.target.id === 'confirm_user') {
       authorization();
       authorizeModal.classList.toggle('active', false);
+      fillCalendarTable();
       saveStorage();
     }
   };
@@ -167,13 +169,12 @@ const main = () => {
     event.currentTarget.classList.add('selected');
     activeDataTime = event.currentTarget.dataset.time;
     activeEvent = props.events.find((elem) => elem.data.dayTime === activeDataTime);
-    // console.log('dragstart', activeDataTime);
   };
   const dragendHandler = (event) => {
     event.currentTarget.classList.remove('selected');
     if (isFree) {
       activeEvent.data.dayTime = currentDataTime;
-      changeEntity('events', activeEvent.id, activeEvent.data);
+      ServiceAPI.change('events', activeEvent.id, activeEvent.data);
       fillCalendarTable();
       saveStorage();
     }
@@ -183,7 +184,7 @@ const main = () => {
     isFree = false;
     const currentElement = event.target;
     currentDataTime = currentElement.dataset.time;
-    if (!currentDataTime) return;
+    if (!currentDataTime || !props.isAdmin) return;
     const currrentEvent = props.events.find((elem) => elem.data.dayTime === currentDataTime);
     const isMoveble = activeDataTime !== currentDataTime && !currrentEvent;
     if (!isMoveble) return;
@@ -196,7 +197,7 @@ const main = () => {
     if (props.events.find((myEvent) => myEvent.data.dayTime === `${newDay.value}${newTime.value}`)) {
       addModalError.classList.toggle('booked', true);
     } else {
-      const myNewEvent = await createNewEntity('events', new MyEvent(newDay.value, newTime.value, newName.value, membersList));
+      const myNewEvent = await ServiceAPI.create('events', new MyEvent(newDay.value, newTime.value, newName.value, membersList));
       props.events.push(myNewEvent);
       addModal.classList.toggle('active');
     }
@@ -249,13 +250,13 @@ const main = () => {
 };
 
 const loadData = async () => {
-  const users = await getEntities('users');
+  const users = await ServiceAPI.get('users');
   if (users === null) {
-    props.team.map((member) => createNewEntity('users', new User(member, '')));
-    setTimeout(createNewEntity('users', new Admin('Boss', 'superPassword')), 500);
+    props.team.map((member) => ServiceAPI.create('users', new User(member, '')));
+    setTimeout(ServiceAPI.create('users', new Admin('Boss', 'superPassword')), 500);
     setTimeout(loadData, 1000);
   }
-  props.users = users;
+  if (users) props.users = users;
   init(props);
   main();
   // props.users?.map((user) => deleteEntity('users', user.id)); // to delete all users!!!
