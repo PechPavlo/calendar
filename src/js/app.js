@@ -7,6 +7,7 @@ import { newElement } from './createElement';
 // } from './services/API_service';
 import ServiceAPI from './services/API_service_singltone';
 import { User, Admin } from './users';
+import ErrorModal from './errorModal';
 
 const props = {
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -267,4 +268,5 @@ const loadData = async () => {
   main();
   // props.users?.map((user) => deleteEntity('users', user.id)); // to delete all users!!!
 };
+ErrorModal();
 loadData();
