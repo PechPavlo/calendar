@@ -37,6 +37,7 @@ const main = () => {
   const errorButton = document.querySelector('#add_modal-error_btn');
   const deleteModal = document.querySelector('#delete-modal');
   const authorizeModal = document.querySelector('#authorize-modal');
+  const errorModal = document.querySelector('#error-modal');
   const autorizedBy = document.querySelector('.autorized-by');
   const changeUserButton = document.querySelector('.change_user-btn');
   const deleteEventName = document.querySelector('.delete_modal-subtitle');
@@ -132,6 +133,10 @@ const main = () => {
       fillCalendarTable();
       saveStorage();
     }
+  };
+
+  const errorModalHandler = (event) => {
+    if (event.target.id === 'error-modal' || event.target.id === 'confirm_error') { errorModal.classList.toggle('active'); }
   };
 
   const addDropdownHandler = (event, clear) => {
@@ -234,6 +239,7 @@ const main = () => {
     });
     membersToAdd.forEach((el) => el.addEventListener('click', addDropdownHandler));
     deleteModal.addEventListener('click', deleteModalHandler);
+    errorModal.addEventListener('click', errorModalHandler);
     authorizeModal.addEventListener('click', authorizeModalHandler);
     changeUserButton.addEventListener('click', () => authorizeModal.classList.toggle('active', true));
     deleteEventButtons.forEach((button) => {
