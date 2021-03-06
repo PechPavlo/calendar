@@ -5,7 +5,8 @@ import { newElement } from './createElement';
 // import {
 //   createNewEntity, changeEntity, getEntities, deleteEntity,
 // } from './services/API_service';
-import ServiceAPI from './services/API_service_singltone';
+// import ServiceAPI from './services/API_service_singltone';
+import ServiceAPI from './services/API_service_decorator';
 import { User, Admin } from './users';
 import ErrorModal from './errorModal';
 
