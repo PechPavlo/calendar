@@ -41,3 +41,28 @@ For saving user's scheduler settings used LocalStorage.
 * When user opens an application he/she has to authorize himself using the select modal (like in the example mockup);
 * If authorized user is Admin he is able to create and update events(if Drag and Drop was implemented in your test task);
 * If authorized user is User he/she is not able to create/update events. This means that 'Create Event' button should be hidden for those users.
+
+#### Homework 2 feature requirements
+
+Implement CRUD operations for events.
+* All Events should be stored on BE side;
+* For communicating with API you may use Fetch, Axios etc...;
+* Implement create Event via POST method;
+* Implement delete Event via DELETE method;
+* To retrieve all Events use GET method;
+* If you have drag'n'drop you should update Event via PUT method;.
+* For each API call implement Notification that indicates a successful response.
+##### Optional requirements:
+* Please use async/await for handling API responses;
+* Store users in API (create separate entity called 'users' and retrieve them via GET method);
+
+#### Homework 3 feature requirements
+
+Improve code and use patterns such as Singleton, Factory Method, and optional Decorator.
+* Use class for interaction with the backend;
+* Should create only one instance of this class;
+* Should be all possible error in API processed via a decorator approach;
+
+##### Optional requirements:
+* Communication with server should be implemented by using Event emmitter pattern;
+
