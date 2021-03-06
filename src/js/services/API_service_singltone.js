@@ -24,8 +24,7 @@ class ServiceAPISingltone {
         const json = await response.json();
         result = json?.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) })) || null;
       } catch (error) {
-        // console.error('Error:', error);
-        this.showErrorMessage(error);
+        return { error };
       }
       return result;
     };
@@ -47,10 +46,8 @@ class ServiceAPISingltone {
         const json = await response.json();
         result.id = json.id;
         result.data = JSON.parse(json.data.replaceAll('\\"', '"'));
-        // console.log('Success:', result);
       } catch (error) {
-        // console.error('Error:', error);
-        this.showErrorMessage(error);
+        return { error };
       }
       return result;
     };
@@ -72,10 +69,8 @@ class ServiceAPISingltone {
         const json = await response.json();
         result.id = json.id;
         result.data = JSON.parse(json.data.replaceAll('\\"', '"'));
-        // console.log('Success:', result);
       } catch (error) {
-        // console.error('Error:', error);
-        this.showErrorMessage(error);
+        return { error };
       }
       return result;
     };
@@ -84,23 +79,13 @@ class ServiceAPISingltone {
       const url = `${this.settingsObject.URL}${this.settingsObject.SYSTEM}/${entity}/${id}`;
 
       try {
-        // const response = await fetch(url, {
         const { status } = await fetch(url, {
           method: 'DELETE',
         });
-        console.log('Success:', status);
+        return status;
       } catch (error) {
-        // console.error('Error:', error);
-        this.showErrorMessage(error);
+        return { error };
       }
-    };
-
-    showErrorMessage = (message) => {
-      const errorModal = document.querySelector('#error-modal');
-      const errorSpan = document.querySelector('.error_modal-subtitle');
-      errorSpan.textContent = message;
-      errorModal.classList.add('active');
-    //   console.log('My error message:', message);
     };
 }
 
