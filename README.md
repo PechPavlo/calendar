@@ -66,3 +66,15 @@ Improve code and use patterns such as Singleton, Factory Method, and optional De
 ##### Optional requirements:
 * Communication with server should be implemented by using Event emmitter pattern;
 
+#### Homework 4 feature requirements
+
+In this homework I have to enhance your project with development tools.
+* Add ESLint to your project. It should use eslint-config-airbnb;
+* Add and setup Jest. Create unit tests for business logic CRUD operations and Event creation form (at least 5 tests);
+* Add Webpack to your project. It should use loaders for *.js, *.scss files and add plugins that minified your javascript code;
+* Describe application launch process and commands that you have in README.md;
+
+##### Optional requirements:
+* Add Prettier;
+* Add stylelint;
+
