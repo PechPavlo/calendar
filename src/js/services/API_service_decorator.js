@@ -14,26 +14,36 @@ class APIServiceDecorator {
 
   async get(entity) {
     const result = await this.service.get(entity);
+    let finisedResult = null;
     if (result.error) {
       this.showErrorMessage(`in ${entity}: ${result.error}`);
     }
-    return result;
+    if (result) {
+      finisedResult = result.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) }));
+    }
+    return finisedResult;
   }
 
   async create(entity, entityBody) {
-    const result = await this.service.create(entity, entityBody);
+    const finisedResult = {};
+    const result = await this.service.create(entity, `{"data":"${JSON.stringify(entityBody).replaceAll('"', '\\"')}"}`);
     if (result.error) {
       this.showErrorMessage(`in ${entity}: ${result.error}`);
     }
-    return result;
+    finisedResult.id = result.id;
+    finisedResult.data = JSON.parse(result.data.replaceAll('\\"', '"'));
+    return finisedResult;
   }
 
   async change(entity, id, entityBody) {
-    const result = await this.service.change(entity, id, entityBody);
+    const finisedResult = {};
+    const result = await this.service.change(entity, id, `{"data":"${JSON.stringify(entityBody).replaceAll('"', '\\"')}"}`);
     if (result.error) {
       this.showErrorMessage(`in ${entity}: ${result.error}`);
     }
-    return result;
+    finisedResult.id = result.id;
+    finisedResult.data = JSON.parse(result.data.replaceAll('\\"', '"'));
+    return finisedResult;
   }
 
   async delete(entity, id) {
@@ -41,6 +51,7 @@ class APIServiceDecorator {
     if (result.error) {
       this.showErrorMessage(`in ${entity}: ${result.error}`);
     }
+    console.log(result);
     return result;
   }
 }

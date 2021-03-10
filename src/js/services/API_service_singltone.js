@@ -21,9 +21,7 @@ class ServiceAPISingltone {
         const response = await fetch(url, {
           method: 'get',
         });
-        // const json = await response.json();
-        // result = json?.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) })) || null;
-        result = response;
+        result = await response.json();
       } catch (error) {
         return { error };
       }
@@ -32,21 +30,18 @@ class ServiceAPISingltone {
 
     create = async (entity, entityBody) => {
       const url = `${this.settingsObject.URL}${this.settingsObject.SYSTEM}/${entity}`;
-      const data = `{"data":"${JSON.stringify(entityBody).replaceAll('"', '\\"')}"}`;
-      const result = {};
+      let result;
 
       try {
         const response = await fetch(url, {
           method: 'POST',
-          body: data,
+          body: entityBody,
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
         });
-        const json = await response.json();
-        result.id = json.id;
-        result.data = JSON.parse(json.data.replaceAll('\\"', '"'));
+        result = await response.json();
       } catch (error) {
         return { error };
       }
@@ -55,21 +50,18 @@ class ServiceAPISingltone {
 
     change = async (entity, id, entityBody) => {
       const url = `${this.settingsObject.URL}${this.settingsObject.SYSTEM}/${entity}/${id}`;
-      const data = `{"data":"${JSON.stringify(entityBody).replaceAll('"', '\\"')}"}`;
-      const result = {};
+      let result;
 
       try {
         const response = await fetch(url, {
           method: 'PUT',
-          body: data,
+          body: entityBody,
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
         });
-        const json = await response.json();
-        result.id = json.id;
-        result.data = JSON.parse(json.data.replaceAll('\\"', '"'));
+        result = await response.json();
       } catch (error) {
         return { error };
       }
