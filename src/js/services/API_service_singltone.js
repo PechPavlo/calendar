@@ -21,8 +21,9 @@ class ServiceAPISingltone {
         const response = await fetch(url, {
           method: 'get',
         });
-        const json = await response.json();
-        result = json?.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) })) || null;
+        // const json = await response.json();
+        // result = json?.map((elem) => ({ id: elem.id, data: JSON.parse(elem.data.replaceAll('\\"', '"')) })) || null;
+        result = response;
       } catch (error) {
         return { error };
       }
